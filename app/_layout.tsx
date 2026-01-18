@@ -1,24 +1,36 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+import { Stack } from "expo-router";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { StyleSheet } from "react-native";
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+    <SafeAreaProvider>
+      <SafeAreaView style={{ flex: 1 }}>
+        <Stack>
+          {/* Tabs */}
+          <Stack.Screen
+            name="(tabs)"
+            options={{ headerShown: false }}
+          />
+
+          {/* Calendar detail */}
+          <Stack.Screen
+            name="calendar/[date]"
+            options={{
+              headerShown: true,
+              title: "Riwayat",
+              headerBackTitle: "Kembali"
+            }}
+          />
+        </Stack>
+      </SafeAreaView>
+    </SafeAreaProvider>
+  )
 }
+
+const styles = StyleSheet.create({
+  safe: {
+    flex: 1,
+    backgroundColor: "#fff"
+  }
+})
